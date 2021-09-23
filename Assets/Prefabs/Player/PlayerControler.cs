@@ -10,6 +10,7 @@ public class PlayerControler : MonoBehaviour
     [SerializeField] float RotationSpeed = 24f;
     [SerializeField] float TraceingDistance = 1f;
     [SerializeField] float TraceingDipth = 0.8f;
+    [SerializeField] float LadderClimbCommitAngle = 20f;
     [SerializeField] float GroundCheckRadius = 0.1f;
     [SerializeField] LayerMask GroundCheckMask;
     InputActions inputActions;
@@ -17,6 +18,45 @@ public class PlayerControler : MonoBehaviour
     Vector3 Velocity;
     float Gravity = -9.81f;
     CharacterController characterController;
+
+    LadderScript CurrentClimbingLadder;
+    List<LadderScript> LaddersNearby = new List<LadderScript>();
+
+    public void NotifyLadderNearby(LadderScript ladderNearby)
+    {
+        LaddersNearby.Add(ladderNearby);
+    }
+
+    public void NotifyLadderExit(LadderScript ladderExit)
+    {
+        if(ladderExit == CurrentClimbingLadder)
+        {
+            CurrentClimbingLadder = null;
+        }
+        LaddersNearby.Remove(ladderExit);
+    }
+
+    LadderScript FindPlayerClimbingLadder()
+    {
+        Vector3 PlayerDesiredMoveDir = GetPlayerDesiredMoveDir();
+        LadderScript ChosenLadder = null;
+        float ClosetAngle = 180.0f;
+        foreach(LadderScript ladder in LaddersNearby)
+        {
+            Vector3 LadderDir = ladder.transform.position - transform.position;
+            LadderDir.y = 0;
+            LadderDir.Normalize();
+            float Dot = Vector3.Dot(PlayerDesiredMoveDir, LadderDir);
+            float AngleDegrees = Mathf.Acos(Dot) * Mathf.Rad2Deg;
+            Debug.Log($"find Ladder with angle {AngleDegrees}");
+            if(AngleDegrees < LadderClimbCommitAngle && AngleDegrees < ClosetAngle)
+            {
+                ChosenLadder = ladder;
+                ClosetAngle = AngleDegrees;
+            }
+        }
+        return ChosenLadder;
+    }    
 
     bool IsOnGround()
     {
@@ -50,8 +90,35 @@ public class PlayerControler : MonoBehaviour
     }
 
 
+    void HopOnLadder(LadderScript ladderToHopOn)
+    {
+        if (ladderToHopOn == null) return;
+
+        if(ladderToHopOn != CurrentClimbingLadder)
+        {
+            Transform snapToTransform = ladderToHopOn.GetClosestSnapTransform(transform.position);
+            characterController.Move(snapToTransform.position - transform.position);
+            transform.rotation = snapToTransform.rotation;
+            CurrentClimbingLadder = ladderToHopOn;
+            Debug.Log("Hopped on Ladder");
+        }
+    }
+
+
     void Update()
     {
+        if(CurrentClimbingLadder==null)
+        {
+            HopOnLadder(FindPlayerClimbingLadder());
+        }
+
+        if (CurrentClimbingLadder != null)
+        {
+            Debug.Log("Ladder Climb");
+        }
+
+
+
         if (IsOnGround())
         {
             Velocity.y = -0.2f;
