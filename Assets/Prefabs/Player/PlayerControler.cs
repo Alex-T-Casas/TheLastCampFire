@@ -52,7 +52,7 @@ public class PlayerControler : MonoBehaviour
 
     void Update()
     {
-        if(IsOnGround())
+        if (IsOnGround())
         {
             Velocity.y = -0.2f;
         }
@@ -91,7 +91,7 @@ public class PlayerControler : MonoBehaviour
     void UpdateRotation()
     {
         Vector3 PlayerDesiredDir = GetPlayerDesiredMoveDir();
-        if(PlayerDesiredDir.magnitude == 0)
+        if (PlayerDesiredDir.magnitude == 0)
         {
             PlayerDesiredDir = transform.forward;
         }
