@@ -97,6 +97,8 @@ MonoBehaviour:
   GroundCheck: {fileID: 8482586766791301872}
   WalkingSpeed: 4
   RotationSpeed: 20
+  TraceingDistance: 0.1
+  TraceingDipth: 0.8
   GroundCheckRadius: 0.1
   GroundCheckMask:
     serializedVersion: 2
