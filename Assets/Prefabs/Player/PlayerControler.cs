@@ -6,9 +6,14 @@ using UnityEngine.InputSystem;
 public class PlayerControler : MonoBehaviour
 {
     [SerializeField] Transform GroundCheck;
+    [SerializeField] Transform GroundCheck_front;
+    [SerializeField] Transform GroundCheck_back;
+    [SerializeField] Transform GroundCheck_left;
+    [SerializeField] Transform GroundCheck_right;
     [SerializeField] float WalkingSpeed = 5f;
     [SerializeField] float RotationSpeed = 24f;
     [SerializeField] float GroundCheckRadius = 0.1f;
+    [SerializeField] float SideGroundCheckRadius = 0.01f;
     [SerializeField] LayerMask GroundCheckMask;
     InputActions inputActions;
     Vector2 MoveInput;
@@ -19,6 +24,26 @@ public class PlayerControler : MonoBehaviour
     bool IsOnGround()
     {
         return Physics.CheckSphere(GroundCheck.position, GroundCheckRadius, GroundCheckMask);
+    }
+
+    bool GroundInFront()
+    {
+        return Physics.CheckSphere(GroundCheck_front.position, SideGroundCheckRadius, GroundCheckMask);
+    }
+
+    bool GroundInBack()
+    {
+        return Physics.CheckSphere(GroundCheck_back.position, SideGroundCheckRadius, GroundCheckMask);
+    }
+
+    bool GroundInLeft()
+    {
+        return Physics.CheckSphere(GroundCheck_left.position, SideGroundCheckRadius, GroundCheckMask);
+    }
+
+    bool GroundInRight()
+    {
+        return Physics.CheckSphere(GroundCheck_right.position, SideGroundCheckRadius, GroundCheckMask);
     }
     private void Awake()
     {
@@ -53,6 +78,16 @@ public class PlayerControler : MonoBehaviour
         if(IsOnGround())
         {
             Velocity.y = -0.2f;
+        }
+
+        if(!GroundInFront())
+        {
+            Velocity.z = -10f;//-GetPlayerDesiredMoveDir().z * WalkingSpeed;
+        }
+
+        if (!GroundInLeft() || !GroundInRight())
+        {
+            Velocity.x = -10f;//-GetPlayerDesiredMoveDir().x * WalkingSpeed;
         }
 
         Velocity.x = GetPlayerDesiredMoveDir().x * WalkingSpeed;
