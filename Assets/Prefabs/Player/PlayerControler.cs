@@ -18,6 +18,7 @@ public class PlayerControler : MonoBehaviour
     [SerializeField] Vector3 Velocity;
     float Gravity = -9.81f;
     CharacterController characterController;
+    [SerializeField] float Dot;
 
     LadderScript CurrentClimbingLadder;
     List<LadderScript> LaddersNearby = new List<LadderScript>();
@@ -165,17 +166,19 @@ public class PlayerControler : MonoBehaviour
                 return;
             }
 
-            Vector3 LadderDir = CurrentClimbingLadder.transform.right;
+            Vector3 LadderDir = CurrentClimbingLadder.transform.forward;
             Vector3 PlayerDesiredMoveDir = GetPlayerDesiredMoveDir();
 
-            float Dot = Vector3.Dot(LadderDir, PlayerDesiredMoveDir);
+            Dot = Vector3.Dot(LadderDir, PlayerDesiredMoveDir);
             Velocity = Vector3.zero;
 
             if (Dot < 0)
             {
                 Velocity = GetPlayerDesiredMoveDir() * WalkingSpeed;
                 Velocity.y = WalkingSpeed;
-            }
+                Velocity.z = 0;
+
+        }
             else
             {
                 if (IsOnGround())
@@ -183,7 +186,8 @@ public class PlayerControler : MonoBehaviour
                     Velocity = GetPlayerDesiredMoveDir() * WalkingSpeed;
                 }
                 Velocity.y = -WalkingSpeed;
-            }
+                Velocity.z = 0;
+        }
         }
 
         void CalculateWalkingVelocity()

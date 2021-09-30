@@ -60,7 +60,7 @@ public class SignScript : Interactable
         setOpacity(newOpacity);
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         InteractComponent interactableComp = other.GetComponent<InteractComponent>();
         if(interactableComp!=null)
@@ -70,9 +70,9 @@ public class SignScript : Interactable
                 StopCoroutine(TransitionCoroutine);
                 TransitionCoroutine = null;
             }
-            TransitionCoroutine = StartCoroutine(TransitionOpacityTo(1));
+            TransitionCoroutine = StartCoroutine(TransitionOpacityTo(0));
         }
-    }
+    }*/
 
     private void OnTriggerExit(Collider other)
     {
@@ -85,6 +85,7 @@ public class SignScript : Interactable
                 TransitionCoroutine = null;
             }
             TransitionCoroutine = StartCoroutine(TransitionOpacityTo(0));
+            currentDialogIndex = 0;
         }
     }
     // Update is called once per frame
@@ -95,6 +96,11 @@ public class SignScript : Interactable
 
     public override void Interact()
     {
+        StartCoroutine(TransitionOpacityTo(1));
         GoToNextDialog();
+        if(currentDialogIndex == 4)
+        {
+            StartCoroutine(TransitionOpacityTo(0));
+        }
     }
 }
