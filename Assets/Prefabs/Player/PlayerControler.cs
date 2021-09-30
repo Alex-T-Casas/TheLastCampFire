@@ -13,6 +13,7 @@ public class PlayerControler : MonoBehaviour
     [SerializeField] float LadderClimbCommitAngle = 20f;
     [SerializeField] float GroundCheckRadius = 0.1f;
     [SerializeField] LayerMask GroundCheckMask;
+    [SerializeField] Transform PickupSocketTransform;
     InputActions inputActions;
     Vector2 MoveInput;
     [SerializeField] Vector3 Velocity;
@@ -22,6 +23,11 @@ public class PlayerControler : MonoBehaviour
 
     LadderScript CurrentClimbingLadder;
     List<LadderScript> LaddersNearby = new List<LadderScript>();
+
+    public Transform GetPickupSocketTransform()
+    {
+        return PickupSocketTransform;
+    }
 
     public void NotifyLadderNearby(LadderScript ladderNearby)
     {
@@ -95,6 +101,7 @@ public class PlayerControler : MonoBehaviour
             interactComp.Interact();
         }
     }
+
 
     void MoveInputUpdated(InputAction.CallbackContext ctx)
     {

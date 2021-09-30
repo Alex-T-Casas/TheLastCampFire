@@ -94,7 +94,7 @@ public class SignScript : Interactable
         
     }
 
-    public override void Interact()
+    public override void Interact(GameObject InteractingGameObject = null)
     {
         StartCoroutine(TransitionOpacityTo(1));
         GoToNextDialog();
