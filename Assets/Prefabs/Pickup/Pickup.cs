@@ -15,7 +15,7 @@ public class Pickup : Interactable
     {
     }
 
-    void PickedUpBy(GameObject PickerGameObject)
+    public virtual void PickedUpBy(GameObject PickerGameObject)
     {
         Transform pickUpSocketTransform = PickerGameObject.transform;
 
@@ -27,16 +27,33 @@ public class Pickup : Interactable
         transform.rotation = pickUpSocketTransform.transform.rotation;
         transform.parent = pickUpSocketTransform.transform;
         transform.localPosition = Vector3.zero;
+
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Rigidbody>().useGravity = false;
+    }
+
+    public virtual void DropedDown()
+    {
+        transform.parent = null;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<Rigidbody>().useGravity = true;
     }
 
     public override void Interact(GameObject InteractingGameObject)
     {
-        Vector3 DirfromInteractingGameObj = (transform.position - InteractingGameObject.transform.position).normalized;
-        Vector3 DirOfInteractingGameObj = InteractingGameObject.transform.forward;
-        float Dot = Vector3.Dot(DirOfInteractingGameObj, DirfromInteractingGameObj);
-        if(Dot > 0.5f)
+        if (transform.parent != null)
         {
-            PickedUpBy(InteractingGameObject);
+            DropedDown();
+        }
+        else
+        {
+            Vector3 DirfromInteractingGameObj = (transform.position - InteractingGameObject.transform.position).normalized;
+            Vector3 DirOfInteractingGameObj = InteractingGameObject.transform.forward;
+            float Dot = Vector3.Dot(DirOfInteractingGameObj, DirfromInteractingGameObj);
+            if (Dot > 0.5f)
+            {
+                PickedUpBy(InteractingGameObject);
+            }
         }
     }
 }
