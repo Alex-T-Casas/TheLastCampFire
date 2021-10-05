@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Ramp : MonoBehaviour
 {
-    [SerializeField] GameObject Player;
     [SerializeField] Transform objectToMove;
     [SerializeField] float transitionTime;
     Coroutine MoveingCoroutine;

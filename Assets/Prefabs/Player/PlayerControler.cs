@@ -24,6 +24,12 @@ public class PlayerControler : MonoBehaviour
     LadderScript CurrentClimbingLadder;
     List<LadderScript> LaddersNearby = new List<LadderScript>();
 
+    Transform currentFloor;
+    Vector3 PreviousWorldPos;
+    Vector3 PreviousFloorLocalPos;
+    Quaternion PreviousWorldRot;
+    Quaternion PreviousFloorLocalRot;
+
     public Transform GetPickupSocketTransform()
     {
         return PickupSocketTransform;
@@ -66,6 +72,31 @@ public class PlayerControler : MonoBehaviour
         return ChosenLadder;
     }
 
+    void CheckFloor()
+    {
+        Collider[] cols = Physics.OverlapSphere(GroundCheck.position, GroundCheckRadius, GroundCheckMask);
+        if (cols.Length != 0)
+        {
+            if (currentFloor != cols[0].transform)
+            {
+                currentFloor = cols[0].transform;
+                SnapShotPostitionAndRotation();
+
+            }
+        }
+    }
+
+    void SnapShotPostitionAndRotation()
+    {
+        PreviousWorldPos = transform.position;
+        PreviousWorldRot = transform.rotation;
+        if (currentFloor != null)
+        {
+            PreviousFloorLocalPos = currentFloor.InverseTransformPoint(transform.position);
+            PreviousFloorLocalRot = Quaternion.Inverse(currentFloor.rotation) * transform.rotation;
+        }
+    }
+
     bool IsOnGround()
     {
         return Physics.CheckSphere(GroundCheck.position, GroundCheckRadius, GroundCheckMask);
@@ -96,7 +127,7 @@ public class PlayerControler : MonoBehaviour
     void Interact(InputAction.CallbackContext ctx)
     {
         InteractComponent interactComp = GetComponentInChildren<InteractComponent>();
-        if(interactComp!=null)
+        if (interactComp != null)
         {
             interactComp.Interact();
         }
@@ -147,104 +178,118 @@ public class PlayerControler : MonoBehaviour
 
     void Update()
     {
-            if (CurrentClimbingLadder == null)
-            {
-                HopOnLadder(FindPlayerClimbingLadder());
-            }
+        if (CurrentClimbingLadder == null)
+        {
+            HopOnLadder(FindPlayerClimbingLadder());
+        }
 
-            if (CurrentClimbingLadder)
-            {
-                CalculateClimbingVelocity();
-            }
-            else
-            {
-                CalculateWalkingVelocity();
-            }
-
-            characterController.Move(Velocity * Time.deltaTime);
-            UpdateRotation();
+        if (CurrentClimbingLadder)
+        {
+            CalculateClimbingVelocity();
+        }
+        else
+        {
+            CalculateWalkingVelocity();
+        }
+        CheckFloor();
+        FollowFloor();
+        characterController.Move(Velocity * Time.deltaTime);
+        UpdateRotation();
+        SnapShotPostitionAndRotation();
     }
 
-        void CalculateClimbingVelocity()
+    void FollowFloor()
+    {
+        if (currentFloor)
         {
-            if (MoveInput.magnitude == 0)
-            {
-                Velocity = Vector3.zero;
-                return;
-            }
+            Vector3 DeltaMove = currentFloor.TransformPoint(PreviousFloorLocalPos) - PreviousWorldPos;
+            Velocity += DeltaMove / Time.deltaTime;
 
-            Vector3 LadderDir = CurrentClimbingLadder.transform.forward;
-            Vector3 PlayerDesiredMoveDir = GetPlayerDesiredMoveDir();
-
-            Dot = Vector3.Dot(LadderDir, PlayerDesiredMoveDir);
+            Quaternion DestinationRot = currentFloor.rotation * PreviousFloorLocalRot; // we are adding
+            Quaternion DeltaRot = Quaternion.Inverse(PreviousWorldRot) * DestinationRot;
+            transform.rotation = transform.rotation * DeltaRot;
+        }
+    }
+    void CalculateClimbingVelocity()
+    {
+        if (MoveInput.magnitude == 0)
+        {
             Velocity = Vector3.zero;
-
-            if (Dot < 0)
-            {
-                Velocity = GetPlayerDesiredMoveDir() * WalkingSpeed;
-                Velocity.y = WalkingSpeed;
-                Velocity.z = 0;
-
-        }
-            else
-            {
-                if (IsOnGround())
-                {
-                    Velocity = GetPlayerDesiredMoveDir() * WalkingSpeed;
-                }
-                Velocity.y = -WalkingSpeed;
-                Velocity.z = 0;
-        }
+            return;
         }
 
-        void CalculateWalkingVelocity()
+        Vector3 LadderDir = CurrentClimbingLadder.transform.forward;
+        Vector3 PlayerDesiredMoveDir = GetPlayerDesiredMoveDir();
+
+        Dot = Vector3.Dot(LadderDir, PlayerDesiredMoveDir);
+        Velocity = Vector3.zero;
+
+        if (Dot < 0)
+        {
+            Velocity = GetPlayerDesiredMoveDir() * WalkingSpeed;
+            Velocity.y = WalkingSpeed;
+            Velocity.z = 0;
+
+        }
+        else
         {
             if (IsOnGround())
             {
-                Velocity.y = -0.2f;
+                Velocity = GetPlayerDesiredMoveDir() * WalkingSpeed;
             }
-
-            Velocity.x = GetPlayerDesiredMoveDir().x * WalkingSpeed;
-            Velocity.z = GetPlayerDesiredMoveDir().z * WalkingSpeed;
-            Velocity.y += Gravity * Time.deltaTime;
-
-            Vector3 PosXTrancePos = transform.position + new Vector3(TraceingDistance, 0.5f, 0f);
-            Vector3 NegXTrancePos = transform.position + new Vector3(-TraceingDistance, 0.5f, 0f);
-            Vector3 PosZTrancePos = transform.position + new Vector3(0f, 0.5f, TraceingDistance);
-            Vector3 NegZTrancePos = transform.position + new Vector3(0f, 0.5f, -TraceingDistance);
-
-            bool CanGoPosX = Physics.Raycast(PosXTrancePos, Vector3.down, TraceingDipth, GroundCheckMask);
-            bool CanGoNegX = Physics.Raycast(NegXTrancePos, Vector3.down, TraceingDipth, GroundCheckMask);
-            bool CanGoPosZ = Physics.Raycast(PosZTrancePos, Vector3.down, TraceingDipth, GroundCheckMask);
-            bool CanGoNegZ = Physics.Raycast(NegZTrancePos, Vector3.down, TraceingDipth, GroundCheckMask);
-
-            float xMin = CanGoNegX ? float.MinValue : 0f;
-            float xMax = CanGoPosX ? float.MaxValue : 0f;
-            float zMin = CanGoNegZ ? float.MinValue : 0f;
-            float zMax = CanGoPosZ ? float.MaxValue : 0f;
-
-            Velocity.x = Mathf.Clamp(Velocity.x, xMin, xMax);
-            Velocity.z = Mathf.Clamp(Velocity.z, zMin, zMax);
+            Velocity.y = -WalkingSpeed;
+            Velocity.z = 0;
         }
+    }
 
-        Vector3 GetPlayerDesiredMoveDir()
+    void CalculateWalkingVelocity()
+    {
+        if (IsOnGround())
         {
-            return new Vector3(-MoveInput.y, 0f, MoveInput.x).normalized;
+            Velocity.y = -0.2f;
         }
 
-        void UpdateRotation()
+        Velocity.x = GetPlayerDesiredMoveDir().x * WalkingSpeed;
+        Velocity.z = GetPlayerDesiredMoveDir().z * WalkingSpeed;
+        Velocity.y += Gravity * Time.deltaTime;
+
+        Vector3 PosXTrancePos = transform.position + new Vector3(TraceingDistance, 0.5f, 0f);
+        Vector3 NegXTrancePos = transform.position + new Vector3(-TraceingDistance, 0.5f, 0f);
+        Vector3 PosZTrancePos = transform.position + new Vector3(0f, 0.5f, TraceingDistance);
+        Vector3 NegZTrancePos = transform.position + new Vector3(0f, 0.5f, -TraceingDistance);
+
+        bool CanGoPosX = Physics.Raycast(PosXTrancePos, Vector3.down, TraceingDipth, GroundCheckMask);
+        bool CanGoNegX = Physics.Raycast(NegXTrancePos, Vector3.down, TraceingDipth, GroundCheckMask);
+        bool CanGoPosZ = Physics.Raycast(PosZTrancePos, Vector3.down, TraceingDipth, GroundCheckMask);
+        bool CanGoNegZ = Physics.Raycast(NegZTrancePos, Vector3.down, TraceingDipth, GroundCheckMask);
+
+        float xMin = CanGoNegX ? float.MinValue : 0f;
+        float xMax = CanGoPosX ? float.MaxValue : 0f;
+        float zMin = CanGoNegZ ? float.MinValue : 0f;
+        float zMax = CanGoPosZ ? float.MaxValue : 0f;
+
+        Velocity.x = Mathf.Clamp(Velocity.x, xMin, xMax);
+        Velocity.z = Mathf.Clamp(Velocity.z, zMin, zMax);
+    }
+
+    Vector3 GetPlayerDesiredMoveDir()
+    {
+        return new Vector3(-MoveInput.y, 0f, MoveInput.x).normalized;
+    }
+
+    void UpdateRotation()
+    {
+        if (CurrentClimbingLadder != null)
         {
-            if (CurrentClimbingLadder != null)
-            {
-                return;
-            }
-            Vector3 PlayerDesiredDir = GetPlayerDesiredMoveDir();
-            if (PlayerDesiredDir.magnitude == 0)
-            {
-                PlayerDesiredDir = transform.forward;
-            }
-
-            Quaternion DesiredRotation = Quaternion.LookRotation(PlayerDesiredDir, Vector3.up);
-            transform.rotation = Quaternion.Lerp(transform.rotation, DesiredRotation, Time.deltaTime * RotationSpeed);
+            return;
         }
+        Vector3 PlayerDesiredDir = GetPlayerDesiredMoveDir();
+        if (PlayerDesiredDir.magnitude == 0)
+        {
+            PlayerDesiredDir = transform.forward;
+        }
+
+        Quaternion DesiredRotation = Quaternion.LookRotation(PlayerDesiredDir, Vector3.up);
+        transform.rotation = Quaternion.Lerp(transform.rotation, DesiredRotation, Time.deltaTime * RotationSpeed);
+    }
 }
