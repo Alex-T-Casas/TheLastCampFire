@@ -21,6 +21,7 @@ public class Artifact : Pickup
         }
     }
 
+
     public override void DropedDown()
     {
         ArtifactSlot slot = GetArtifactSlotNearBy();

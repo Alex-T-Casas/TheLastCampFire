@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f858daf0c5d944894002f8589ea038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  platformToMove: {fileID: 0}
   ArtifactTrans: {fileID: 9070820660411181121}
 --- !u!65 &6446087842160341779
 BoxCollider:

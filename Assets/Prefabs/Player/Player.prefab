@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9003296596034701642}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.754, z: 0}
+  m_LocalPosition: {x: 0, y: 0.299, z: 0.536}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4120156889479606811}
@@ -130,13 +130,13 @@ MonoBehaviour:
   WalkingSpeed: 4
   RotationSpeed: 20
   TraceingDistance: 0.1
-  TraceingDipth: 0.8
+  TraceingDipth: 1.5
   LadderClimbCommitAngle: 20
   GroundCheckRadius: 0.1
   GroundCheckMask:
     serializedVersion: 2
     m_Bits: 64
-  PickupSocketTransform: {fileID: 0}
+  PickupSocketTransform: {fileID: 8679043369719132227}
   Velocity: {x: 0, y: 0, z: 0}
   Dot: 0
 --- !u!1001 &825513761953166623
