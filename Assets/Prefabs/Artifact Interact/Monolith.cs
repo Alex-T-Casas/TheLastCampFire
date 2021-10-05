@@ -5,6 +5,7 @@ using UnityEngine;
 public class Monolith : Interactable
 {
     [SerializeField] Ramp RampToMove;
+    [SerializeField] Ramp LadderToMove;
     bool MovedObj = false;
 
     // Start is called before the first frame update

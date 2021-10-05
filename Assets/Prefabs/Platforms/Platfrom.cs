@@ -11,6 +11,17 @@ public class Platfrom : MonoBehaviour
     public Transform StartTrans;
     public Transform EndTrans;
     // Start is called before the first frame update
+    public void MoveTo(bool ToEnd)
+    {
+        if(ToEnd)
+        {
+            MoveTo(EndTrans);
+        }else
+        {
+            MoveTo(StartTrans);
+        }
+    }
+
     public void MoveTo(Transform Destination)
     {
         if(MoveingCoroutine != null)
