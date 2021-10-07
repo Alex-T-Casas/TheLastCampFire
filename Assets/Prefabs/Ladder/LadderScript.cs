@@ -21,7 +21,7 @@ public class LadderScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerControler otherAsPlayer = other.GetComponent<PlayerControler>();
+        LadderClimbingComp otherAsPlayer = other.GetComponent<LadderClimbingComp>();
         if(otherAsPlayer!=null)
         {
             otherAsPlayer.NotifyLadderNearby(this);
@@ -30,7 +30,7 @@ public class LadderScript : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        PlayerControler otherAsPlayer = other.GetComponent<PlayerControler>();
+        LadderClimbingComp otherAsPlayer = other.GetComponent<LadderClimbingComp>();
         if (otherAsPlayer != null)
         {
             otherAsPlayer.NotifyLadderExit(this);

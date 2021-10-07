@@ -8,7 +8,7 @@ public class RampMesh : MonoBehaviour
     [SerializeField] Transform Transform;
     // Start is called before the first frame update
 
-    private void OnTriggernEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == Player)
         {
@@ -16,7 +16,7 @@ public class RampMesh : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == Player)
         {

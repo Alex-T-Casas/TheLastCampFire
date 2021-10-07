@@ -10,23 +10,7 @@ public class Ramp : MonoBehaviour
 
     public Transform StartTrans;
     public Transform EndTrans;
-    // Start is called before the first frame update
 
-    /*private void OnTriggernEnter(Collider other)
-    {
-        if (other.gameObject == Player)
-        {
-            other.transform.SetParent(transform);
-        }
-    }
-
-    private void OnCollisionExit(Collider other)
-    {
-        if (other.gameObject == Player)
-        {
-            other.transform.SetParent(null);
-        }
-    }*/
 
     public void MoveTo(Transform Dest)
     {
