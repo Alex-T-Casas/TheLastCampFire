@@ -3056,7 +3056,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LadderClimbCommitAngle: 20
-  LadderHopOnTime: 0.15
+  LadderHopOnTime: 0.25
 --- !u!1001 &169722282
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11013,7 +11013,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3250501543189653758, guid: becb306fcbac3954db88dbfa6eb428e9, type: 3}
       propertyPath: transitionTime
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6334998723288416757, guid: becb306fcbac3954db88dbfa6eb428e9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18929,6 +18929,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7202008219029365073, guid: 60ee61b107ddee04ebe6b3afab332f46, type: 3}
   m_PrefabInstance: {fileID: 1006897036}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1013355758 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8983606569990596162, guid: 3aede9c7311b4e744af633e31f85e9a7, type: 3}
+  m_PrefabInstance: {fileID: 854281637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1013942860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21640,6 +21645,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5236078868935419280, guid: fc3606814b105d944aebbeed94d35dc4, type: 3}
   m_PrefabInstance: {fileID: 1146790056}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1166826506 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8983606569990596162, guid: 3aede9c7311b4e744af633e31f85e9a7, type: 3}
+  m_PrefabInstance: {fileID: 420767318}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1171217532
 PrefabInstance:
@@ -32160,7 +32170,7 @@ PrefabInstance:
       objectReference: {fileID: 165498568}
     - target: {fileID: 8951462544138834101, guid: 3c43bf3ee5e7d044e80349f674725539, type: 3}
       propertyPath: transitionTime
-      value: 35
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 9065673284751802460, guid: 3c43bf3ee5e7d044e80349f674725539, type: 3}
       propertyPath: Player
@@ -32307,6 +32317,10 @@ PrefabInstance:
       propertyPath: platformToMove
       value: 
       objectReference: {fileID: 2004279739}
+    - target: {fileID: 6080652038831399543, guid: 9418c49bfb7d0e549a0be85b891aeb1c, type: 3}
+      propertyPath: ToggelingObject
+      value: 
+      objectReference: {fileID: 1013355758}
     - target: {fileID: 6446087842160341779, guid: 9418c49bfb7d0e549a0be85b891aeb1c, type: 3}
       propertyPath: m_Size.x
       value: 2
@@ -36880,7 +36894,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1279459533034343911, guid: 71ba1ca998db781479eedd958bf63126, type: 3}
       propertyPath: TransitionTime
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 142923957195024543, guid: 71ba1ca998db781479eedd958bf63126, type: 3}
       propertyPath: m_RootOrder
@@ -37129,7 +37143,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5955167999450969532, guid: 3aede9c7311b4e744af633e31f85e9a7, type: 3}
   m_PrefabInstance: {fileID: 854281637}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1013355758}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65a18a6d5e6a00d42b7d1b0f7c87bcf0, type: 3}
@@ -38225,7 +38239,7 @@ PrefabInstance:
       objectReference: {fileID: 165498568}
     - target: {fileID: -4852969567546563116, guid: 265c96d921d907748b3629587516f5db, type: 3}
       propertyPath: transitionTime
-      value: 35
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 746989841085265032, guid: 265c96d921d907748b3629587516f5db, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -39648,7 +39662,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5955167999450969532, guid: 3aede9c7311b4e744af633e31f85e9a7, type: 3}
   m_PrefabInstance: {fileID: 420767318}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1166826506}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65a18a6d5e6a00d42b7d1b0f7c87bcf0, type: 3}
@@ -39861,6 +39875,10 @@ PrefabInstance:
       propertyPath: platformToMove
       value: 
       objectReference: {fileID: 2132919006}
+    - target: {fileID: 6080652038831399543, guid: 9418c49bfb7d0e549a0be85b891aeb1c, type: 3}
+      propertyPath: ToggelingObject
+      value: 
+      objectReference: {fileID: 1166826506}
     - target: {fileID: 6446087842160341779, guid: 9418c49bfb7d0e549a0be85b891aeb1c, type: 3}
       propertyPath: m_Size.x
       value: 2

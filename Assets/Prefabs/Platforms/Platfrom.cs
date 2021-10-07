@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Platfrom : MonoBehaviour
+public class Platfrom : MonoBehaviour, Toggleable
 {
     [SerializeField] Transform objectToMove;
     [SerializeField] float transitionTime;
@@ -10,7 +10,17 @@ public class Platfrom : MonoBehaviour
 
     public Transform StartTrans;
     public Transform EndTrans;
-    // Start is called before the first frame update
+
+    public void ToggleOn()
+    {
+        MoveTo(true);
+    }
+
+    public void ToggleOff()
+    {
+        MoveTo(false);
+    }
+
     public void MoveTo(bool ToEnd)
     {
         if(ToEnd)

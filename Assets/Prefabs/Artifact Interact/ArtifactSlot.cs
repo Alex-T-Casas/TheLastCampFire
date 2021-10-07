@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class ArtifactSlot : MonoBehaviour
 {
-    [SerializeField] Platfrom platformToMove;
+    [SerializeField] GameObject ToggelingObject;
+
     [SerializeField] Transform ArtifactTrans;
+
    public void OnArtifactLeft()
     {
-        platformToMove.MoveTo(platformToMove.StartTrans);
-        Debug.Log("on artifact");
+        ToggelingObject.GetComponent<Toggleable>().ToggleOff();
     }
 
     public void OnArtifactPlaced()
     {
-        platformToMove.MoveTo(platformToMove.EndTrans);
-        Debug.Log("Placed on me");
-
+        ToggelingObject.GetComponent<Toggleable>().ToggleOn();
     }
 
     public Transform GetSlotTrans()
