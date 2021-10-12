@@ -44,12 +44,17 @@ public class Platfrom : MonoBehaviour, Toggleable
 
     IEnumerator MoveToTrans(Transform Destination, float TransitionTime)
     {
+        Vector3 StartPos = transform.position;
+        Vector3 EndPos = Destination.position;
+        Quaternion StartRot = transform.rotation;
+        Quaternion EndRot = Destination.rotation;
+
         float timmer = 0f;
         while(timmer < TransitionTime)
         {
             timmer += Time.deltaTime;
-            objectToMove.position = Vector3.Lerp(objectToMove.position, Destination.position, timmer / TransitionTime);
-            objectToMove.rotation = Quaternion.Lerp(objectToMove.rotation, Destination.rotation, timmer / TransitionTime);
+            objectToMove.position = Vector3.Lerp(StartPos, EndPos, timmer / TransitionTime);
+            objectToMove.rotation = Quaternion.Lerp(StartRot, EndRot, timmer / TransitionTime);
             yield return new WaitForEndOfFrame();
         }
     }

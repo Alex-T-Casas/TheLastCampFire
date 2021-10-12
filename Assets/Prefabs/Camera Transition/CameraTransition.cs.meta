@@ -3,7 +3,9 @@ guid: 762557ae9f0fc4e47bfa715bbaa484c2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - DestinationCam: {instanceID: 0}
+  - cinemachineBrain: {fileID: 5132453207782215754, guid: 967354f5553a9eb489c2f21b9638c2fe, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

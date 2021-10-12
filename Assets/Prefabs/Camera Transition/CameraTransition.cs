@@ -5,7 +5,6 @@ using Cinemachine;
 
 public class CameraTransition : MonoBehaviour
 {
-    [SerializeField] float TransitionTime = 1.0f;
     [SerializeField] CinemachineVirtualCamera DestinationCam;
     [SerializeField] CinemachineBrain cinemachineBrain;
 
@@ -13,21 +12,10 @@ public class CameraTransition : MonoBehaviour
     {
         Camera.main.GetComponent<CinemachineBrain>(); 
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.GetComponent<PlayerControler>() != null)
-        {
-            cinemachineBrain.m_DefaultBlend.m_Time = TransitionTime;
-            DestinationCam.Priority = 11;
-        }
-    }
 
-    private void OnTriggerExit(Collider other)
+    public void ChangeToCamera(int pryority, float time)
     {
-        if (other.GetComponent<PlayerControler>() != null)
-        {
-            cinemachineBrain.m_DefaultBlend.m_Time = TransitionTime;
-            DestinationCam.Priority = 9;
-        }
+        cinemachineBrain.m_DefaultBlend.m_Time = time;
+        DestinationCam.Priority = pryority;
     }
 }
